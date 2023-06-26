@@ -3,6 +3,9 @@
 A="${1}"
 B="${2}"
 
+A="test.a"
+B="test.b"
+
 T=$(mktemp)
 MissingFromA=$(mktemp)
 MissingFromB=$(mktemp)
@@ -20,21 +23,21 @@ printf "${FORMAT}" "Item" "${A_title}" "${B_title}"
 
 cat "${T}" | while read x
 do
- A_count=$(grep -i -c "${x}" "${A}")
- B_count=$(grep -i -c "${x}" "${B}")
- printf "${FORMAT}" "${x}" "${A_count}" "${B_count}"
+  A_count=$(grep -i -c "${x}" "${A}")
+  B_count=$(grep -i -c "${x}" "${B}")
+  printf "${FORMAT}" "${x}" "${A_count}" "${B_count}"
 
- if [ "${A_count}" != "0" ] && [ "${B_count}" != "0" ]; then
-  echo "${x}" >> "${PresentInBoth}"
- fi
+  if [ "${A_count}" != "0" ] && [ "${B_count}" != "0" ]; then
+    echo "${x}" >> "${PresentInBoth}"
+  fi
 
- if [ "${A_count}" != "0" ] && [ "${B_count}" = "0" ]; then
-  echo "${x}" >> "${MissingFromB}"
- fi
+  if [ "${A_count}" != "0" ] && [ "${B_count}" = "0" ]; then
+    echo "${x}" >> "${MissingFromB}"
+  fi
 
- if [ "${A_count}" = "0" ] && [ "${B_count}" != "0" ]; then
-  echo "${x}" >> "${MissingFromA}"
- fi
+  if [ "${A_count}" = "0" ] && [ "${B_count}" != "0" ]; then
+    echo "${x}" >> "${MissingFromA}"
+  fi
 
 done
 
